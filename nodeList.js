@@ -64,21 +64,27 @@ class LinkedList {
         if (index > this.length - 1 || index < 0) {
             return null;
         }
+
         let current = this.head;
         let count = 0;
-        if (index === 0) {
-            this.head = current.next;
-            this.head.prev = null;
-        } else if (index === this.length - 1) {
-            this.tail = current.prev;
-            this.tail.next = null;
-        } else {
-            while (count < index) {
-                current = current.next;
-                count++;
+        while (current != null) {
+            if (count === index) {
+                let prev = current.prev;
+                let next = current.next;
+                if (prev) {
+                    prev.next = next;
+                } else {
+                    this.head = next;
+                }
+                if (next) {
+                    next.prev = prev;
+                } else {
+                    this.tail = prev;
+                }
+                break;
             }
-            current.prev.next = current.next;
-            current.next.prev = current.prev;
+            current = current.next;
+            count++;
         }
         this.length--;
         return current.data;
@@ -87,11 +93,10 @@ class LinkedList {
     print() {
         if (this.head) {
             let current = this.head;
-            while (current.next) {
-                console.log(current);
+            while (current != null) {
+                console.log(current.data);
                 current = current.next;
             }
-            console.log(current);
         }
     }
 }
